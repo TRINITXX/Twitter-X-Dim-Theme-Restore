@@ -58,18 +58,9 @@
       color: ${DIM_SECONDARY_TEXT} !important;
     }
 
-    /* ===== LIGHT-MODE PRIMARY TEXT (articles/notes): #0F141A → Dim ===== */
-    ${DARK_SELECTOR} .r-37j5jr {
+    /* ===== ARTICLE (X Notes): light-mode text → Dim ===== */
+    ${DARK_SELECTOR} [data-testid="twitterArticleReadView"] {
       color: ${DIM_PRIMARY_TEXT} !important;
-    }
-    ${DARK_SELECTOR} [style*="color: rgb(15, 20, 25)"],
-    ${DARK_SELECTOR} [style*="color: rgb(15, 20, 26)"] {
-      color: ${DIM_PRIMARY_TEXT} !important;
-    }
-
-    /* ===== LIGHT-MODE SECONDARY TEXT: #536471 → Dim ===== */
-    ${DARK_SELECTOR} [style*="color: rgb(83, 100, 113)"] {
-      color: ${DIM_SECONDARY_TEXT} !important;
     }
 
     /* ===== BORDERS: Lights Out #2F3336 → Dim #38444D ===== */
