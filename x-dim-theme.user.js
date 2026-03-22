@@ -10,13 +10,13 @@
 // ==/UserScript==
 
 (function () {
-  'use strict';
+  "use strict";
 
   // Dim theme colors
-  const DIM_BG = '#15202B';
-  const DIM_BORDER = '#38444D';
-  const DIM_PRIMARY_TEXT = '#F7F9F9';
-  const DIM_SECONDARY_TEXT = '#8B98A5';
+  const DIM_BG = "#15202B";
+  const DIM_BORDER = "#38444D";
+  const DIM_PRIMARY_TEXT = "#F7F9F9";
+  const DIM_SECONDARY_TEXT = "#8B98A5";
 
   const DARK_SELECTOR = 'html[data-theme="dim"]';
 
@@ -58,6 +58,20 @@
       color: ${DIM_SECONDARY_TEXT} !important;
     }
 
+    /* ===== LIGHT-MODE PRIMARY TEXT (articles/notes): #0F141A → Dim ===== */
+    ${DARK_SELECTOR} .r-37j5jr {
+      color: ${DIM_PRIMARY_TEXT} !important;
+    }
+    ${DARK_SELECTOR} [style*="color: rgb(15, 20, 25)"],
+    ${DARK_SELECTOR} [style*="color: rgb(15, 20, 26)"] {
+      color: ${DIM_PRIMARY_TEXT} !important;
+    }
+
+    /* ===== LIGHT-MODE SECONDARY TEXT: #536471 → Dim ===== */
+    ${DARK_SELECTOR} [style*="color: rgb(83, 100, 113)"] {
+      color: ${DIM_SECONDARY_TEXT} !important;
+    }
+
     /* ===== BORDERS: Lights Out #2F3336 → Dim #38444D ===== */
     ${DARK_SELECTOR} .r-1kqtdi0 {
       border-color: ${DIM_BORDER} !important;
@@ -83,16 +97,16 @@
 
   function applyDimTheme() {
     const html = document.documentElement;
-    if (html.getAttribute('data-theme') === 'dark') {
-      html.setAttribute('data-theme', 'dim');
+    if (html.getAttribute("data-theme") === "dark") {
+      html.setAttribute("data-theme", "dim");
     }
     html.style.backgroundColor = DIM_BG;
   }
 
   function injectStyle() {
-    if (document.getElementById('x-dim-theme-restore')) return;
-    const style = document.createElement('style');
-    style.id = 'x-dim-theme-restore';
+    if (document.getElementById("x-dim-theme-restore")) return;
+    const style = document.createElement("style");
+    style.id = "x-dim-theme-restore";
     style.textContent = css;
     (document.head || document.documentElement).appendChild(style);
   }
@@ -107,18 +121,21 @@
   function observeChanges() {
     const observer = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
-        if (mutation.type !== 'attributes') continue;
+        if (mutation.type !== "attributes") continue;
         const el = mutation.target;
 
-        if (el === document.documentElement && mutation.attributeName === 'data-theme') {
-          if (el.getAttribute('data-theme') === 'dark') {
-            el.setAttribute('data-theme', 'dim');
+        if (
+          el === document.documentElement &&
+          mutation.attributeName === "data-theme"
+        ) {
+          if (el.getAttribute("data-theme") === "dark") {
+            el.setAttribute("data-theme", "dim");
           }
         }
 
-        if (el === document.body && mutation.attributeName === 'style') {
-          const style = el.getAttribute('style') || '';
-          if (style.includes('background-color: rgb(0, 0, 0)')) {
+        if (el === document.body && mutation.attributeName === "style") {
+          const style = el.getAttribute("style") || "";
+          if (style.includes("background-color: rgb(0, 0, 0)")) {
             el.style.backgroundColor = DIM_BG;
           }
         }
@@ -127,13 +144,13 @@
 
     observer.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ['data-theme', 'style'],
+      attributeFilter: ["data-theme", "style"],
     });
 
     if (document.body) {
       observer.observe(document.body, {
         attributes: true,
-        attributeFilter: ['style'],
+        attributeFilter: ["style"],
       });
       fixBodyBackground();
     } else {
@@ -142,7 +159,7 @@
           bodyWatcher.disconnect();
           observer.observe(document.body, {
             attributes: true,
-            attributeFilter: ['style'],
+            attributeFilter: ["style"],
           });
           fixBodyBackground();
         }
