@@ -4,11 +4,11 @@ Tampermonkey userscript that restores the blue **Dim** theme on X.com (Twitter),
 
 ## Before / After
 
-| Lights Out (default dark) | Dim (restored) |
-|---------------------------|----------------|
+| Lights Out (default dark) | Dim (restored)       |
+| ------------------------- | -------------------- |
 | `#000000` background      | `#15202B` background |
-| `#E7E9EA` text            | `#F7F9F9` text |
-| `#2F3336` borders         | `#38444D` borders |
+| `#E7E9EA` text            | `#F7F9F9` text       |
+| `#2F3336` borders         | `#38444D` borders    |
 
 ## Installation
 
@@ -18,9 +18,9 @@ Tampermonkey userscript that restores the blue **Dim** theme on X.com (Twitter),
 
 ## How it works
 
-- Sets `data-theme="dim"` on the `<html>` element when X.com tries to set `dark`
+- Detects X's dark mode via the inline `color-scheme: dark` on `<html>` (covers both Dim and Lights Out)
 - Injects CSS overrides for React Native Web class names and inline styles used by X.com
-- Uses a `MutationObserver` to persist the theme when X.com dynamically resets it
+- Forces the `<html>` and `<body>` background to the Dim color, and uses a `MutationObserver` to repaint the body if X resets it to black
 
 ## Compatibility
 
