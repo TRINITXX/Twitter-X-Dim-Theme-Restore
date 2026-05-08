@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         X.com Dim Theme Restore
 // @namespace    x-dim-theme
-// @version      3.0
-// @description  Restore the blue "Dim" theme on X.com (data-theme + RN Web overrides)
+// @version      3.1
+// @description  Restore the blue "Dim" theme on X.com (color-scheme + RN Web overrides)
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @run-at       document-start
@@ -18,7 +18,9 @@
   const DIM_PRIMARY_TEXT = "#F7F9F9";
   const DIM_SECONDARY_TEXT = "#8B98A5";
 
-  const DARK_SELECTOR = 'html[data-theme="dim"]';
+  // X dropped the html[data-theme="dim"] attribute; we now key off the inline
+  // color-scheme that ships on <html> in any dark mode (Dim or Lights Out).
+  const DARK_SELECTOR = 'html[style*="color-scheme: dark"]';
 
   const css = `
     /* ===== Body ===== */
@@ -87,11 +89,7 @@
   `;
 
   function applyDimTheme() {
-    const html = document.documentElement;
-    if (html.getAttribute("data-theme") === "dark") {
-      html.setAttribute("data-theme", "dim");
-    }
-    html.style.backgroundColor = DIM_BG;
+    document.documentElement.style.backgroundColor = DIM_BG;
   }
 
   function injectStyle() {
@@ -115,15 +113,6 @@
         if (mutation.type !== "attributes") continue;
         const el = mutation.target;
 
-        if (
-          el === document.documentElement &&
-          mutation.attributeName === "data-theme"
-        ) {
-          if (el.getAttribute("data-theme") === "dark") {
-            el.setAttribute("data-theme", "dim");
-          }
-        }
-
         if (el === document.body && mutation.attributeName === "style") {
           const style = el.getAttribute("style") || "";
           if (style.includes("background-color: rgb(0, 0, 0)")) {
@@ -131,11 +120,6 @@
           }
         }
       }
-    });
-
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme", "style"],
     });
 
     if (document.body) {
